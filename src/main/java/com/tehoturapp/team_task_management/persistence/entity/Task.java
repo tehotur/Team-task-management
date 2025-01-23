@@ -24,9 +24,9 @@ public class Task {
     private TaskPriority taskPriority;
 
     @Column(name = "task_status", nullable = false)
-    private TaskStatus taskStatus;
+    private TaskStatus taskStatus = TaskStatus.NOT_STARTED;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "task_list_id")
+    @JoinColumn(name = "task_list_id", nullable = false)
     TaskList taskList;
 }

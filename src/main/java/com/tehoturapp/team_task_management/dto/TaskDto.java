@@ -1,6 +1,7 @@
 package com.tehoturapp.team_task_management.dto;
 
 
+import com.tehoturapp.team_task_management.persistence.entity.TaskList;
 import com.tehoturapp.team_task_management.persistence.entity.TaskPriority;
 import com.tehoturapp.team_task_management.persistence.entity.TaskStatus;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +19,4 @@ public class TaskDto {
     private String description;
     private TaskPriority taskPriority;
     private TaskStatus taskStatus;
-    @NotNull
-    private TaskListDto taskListDto;
 }

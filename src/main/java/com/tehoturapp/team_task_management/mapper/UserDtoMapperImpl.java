@@ -1,6 +1,8 @@
 package com.tehoturapp.team_task_management.mapper;
 
+import com.tehoturapp.team_task_management.dto.RoleDto;
 import com.tehoturapp.team_task_management.dto.UserDto;
+import com.tehoturapp.team_task_management.persistence.entity.Role;
 import com.tehoturapp.team_task_management.persistence.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,8 +11,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class UserDtoMapperImpl implements DtoMapper<User, UserDto> {
 
-    private final RoleDtoMapperImpl roleDtoMapper;
-    private final TaskListDtoMapperImpl taskListDtoMapper;
+    private final DtoMapper<Role, RoleDto> roleDtoMapper;
 
     @Override
     public User toEntity(UserDto userDto) {
@@ -23,7 +24,7 @@ public class UserDtoMapperImpl implements DtoMapper<User, UserDto> {
                 userDto.getEmail(),
                 userDto.getPassword(),
                 roleDtoMapper.toEntity(userDto.getRole()),
-                taskListDtoMapper.toEntity(userDto.getTaskList())
+                null
         );
     }
 
@@ -37,8 +38,7 @@ public class UserDtoMapperImpl implements DtoMapper<User, UserDto> {
                 user.getName(),
                 user.getEmail(),
                 user.getPassword(),
-                roleDtoMapper.toDto(user.getRole()),
-                taskListDtoMapper.toDto(user.getTaskList())
+                roleDtoMapper.toDto(user.getRole())
         );
     }
 }

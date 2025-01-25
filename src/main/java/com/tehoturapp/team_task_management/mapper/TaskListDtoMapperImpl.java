@@ -1,7 +1,11 @@
 package com.tehoturapp.team_task_management.mapper;
 
+import com.tehoturapp.team_task_management.dto.TaskDto;
 import com.tehoturapp.team_task_management.dto.TaskListDto;
+import com.tehoturapp.team_task_management.dto.UserDto;
+import com.tehoturapp.team_task_management.persistence.entity.Task;
 import com.tehoturapp.team_task_management.persistence.entity.TaskList;
+import com.tehoturapp.team_task_management.persistence.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.util.Collections;
@@ -12,8 +16,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TaskListDtoMapperImpl implements DtoMapper<TaskList, TaskListDto> {
 
-    private final TaskDtoMapperImpl taskDtoMapper;
-    private final UserDtoMapperImpl userDtoMapper;
+    private final DtoMapper<Task, TaskDto> taskDtoMapper;
+    private final DtoMapper<User, UserDto> userDtoMapper;
 
     @Override
     public TaskList toEntity(TaskListDto taskListDto) {
@@ -42,16 +46,14 @@ public class TaskListDtoMapperImpl implements DtoMapper<TaskList, TaskListDto> {
         return new TaskListDto(
                 taskList.getId(),
                 taskList.getTitle(),
-                Optional.ofNullable(taskList.getTasks())
-                        .map(tasks -> tasks.stream()
-                                .map(taskDtoMapper::toDto)
-                                .collect(Collectors.toList()))
-                        .orElse(Collections.emptyList()),
-                Optional.ofNullable(taskList.getUsers())
-                        .map(users -> users.stream()
-                                .map(userDtoMapper::toDto)
-                                .collect(Collectors.toList()))
-                        .orElse(Collections.emptyList())
+                taskList.getTasks()
+                        .stream()
+                        .map(taskDtoMapper::toDto)
+                        .collect(Collectors.toList()),
+                taskList.getUsers()
+                        .stream()
+                        .map(userDtoMapper::toDto)
+                        .collect(Collectors.toList())
         );
     }
 }

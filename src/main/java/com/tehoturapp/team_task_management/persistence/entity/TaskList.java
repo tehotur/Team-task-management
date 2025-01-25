@@ -22,9 +22,9 @@ public class TaskList {
     private String title;
 
     @OneToMany(mappedBy = "taskList", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<Task> tasks = new ArrayList<>();
+    private List<Task> tasks;
 
     @OneToMany(mappedBy = "taskList")
-    private List<User> users = new ArrayList<>();
+    private List<User> users;
 
 }

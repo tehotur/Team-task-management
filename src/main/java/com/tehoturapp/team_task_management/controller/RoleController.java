@@ -34,8 +34,8 @@ public class RoleController {
     }
 
     @DeleteMapping("/{roleId}")
-    public ResponseEntity<Void> deleteRole(@PathVariable Integer roleId){
-        roleService.deleteRole(roleId);
+    public ResponseEntity<Void> deleteRoleById(@PathVariable Integer roleId){
+        roleService.deleteRoleById(roleId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

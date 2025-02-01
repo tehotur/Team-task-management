@@ -1,5 +1,6 @@
 package com.tehoturapp.team_task_management.controller;
 
+import com.tehoturapp.team_task_management.dto.TaskListDto;
 import com.tehoturapp.team_task_management.dto.UserDto;
 import com.tehoturapp.team_task_management.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,12 @@ public class UserController {
 
     @PostMapping("/{userId}/roles/{roleId}")
     public ResponseEntity<UserDto> assignRoleToUserById(@PathVariable Long userId, @PathVariable Integer roleId){
-        return new ResponseEntity<>(userService.assignRoleToUserById(userId, roleId), HttpStatus.CREATED);
+       return new ResponseEntity<>(userService.assignRoleToUserById(userId, roleId), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/{userId}/task-lists/{taskListId}")
+    public ResponseEntity<TaskListDto> assignUserToTaskListById(@PathVariable Long userId, @PathVariable Integer taskListId){
+        return new ResponseEntity<>(userService.assignUserToTaskListById(userId, taskListId), HttpStatus.CREATED);
     }
 
 }

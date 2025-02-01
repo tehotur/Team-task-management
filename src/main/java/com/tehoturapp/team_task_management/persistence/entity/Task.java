@@ -21,7 +21,7 @@ public class Task {
     private String description;
 
     @Column(name = "task_priority", nullable = false)
-    private TaskPriority taskPriority;
+    private TaskPriority taskPriority = TaskPriority.NORMAL;
 
     @Column(name = "task_status", nullable = false)
     private TaskStatus taskStatus = TaskStatus.NOT_STARTED;

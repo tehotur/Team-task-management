@@ -8,8 +8,6 @@ import com.tehoturapp.team_task_management.persistence.entity.TaskList;
 import com.tehoturapp.team_task_management.persistence.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import java.util.Collections;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component

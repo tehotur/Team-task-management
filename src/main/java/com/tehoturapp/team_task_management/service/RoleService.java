@@ -43,7 +43,7 @@ public class RoleService {
         return roleDtoMapper.toDto(roleFromDb);
     }
     @Transactional
-    public void deleteRole(Integer roleId) {
+    public void deleteRoleById(Integer roleId) {
         roleRepository.deleteById(roleId);
     }
 }

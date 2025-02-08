@@ -1,6 +1,6 @@
 package com.tehoturapp.team_task_management.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RoleDto {
     private Integer id;
-    @NotNull
+    @NotBlank(message = "Name of role cannot be empty or null.")
     private String name;
 }

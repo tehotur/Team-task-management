@@ -1,8 +1,8 @@
 package com.tehoturapp.team_task_management.service;
 
 import com.tehoturapp.team_task_management.dto.RoleDto;
-import com.tehoturapp.team_task_management.exception.IdsNotMatchException;
 import com.tehoturapp.team_task_management.exception.RoleNotFoundException;
+import com.tehoturapp.team_task_management.exception.UserNotFoundException;
 import com.tehoturapp.team_task_management.mapper.DtoMapper;
 import com.tehoturapp.team_task_management.persistence.dao.RoleRepository;
 import com.tehoturapp.team_task_management.persistence.entity.Role;
@@ -33,11 +33,10 @@ public class RoleService {
     }
     @Transactional
     public RoleDto updateRoleById(RoleDto roleDto, Integer roleId) {
-        if (!roleId.equals(roleDto.getId())){
-            throw new IdsNotMatchException();
-        }
+
         Role roleFromDb = roleRepository.findById(roleId)
-                .orElseThrow(RoleNotFoundException::new);
+                .orElseThrow(() -> new RoleNotFoundException(roleId));
+
         roleFromDb.setName(roleDto.getName());
         roleRepository.save(roleFromDb);
         return roleDtoMapper.toDto(roleFromDb);

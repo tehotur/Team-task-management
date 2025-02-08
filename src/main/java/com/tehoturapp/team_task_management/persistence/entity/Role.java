@@ -1,10 +1,10 @@
 package com.tehoturapp.team_task_management.persistence.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 @Entity
@@ -18,7 +18,6 @@ public class Role {
     private Integer id;
 
     @Column(nullable = false)
-    @NotNull
     private String name;
 
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)

@@ -3,6 +3,7 @@ package com.tehoturapp.team_task_management.controller;
 import com.tehoturapp.team_task_management.dto.TaskListDto;
 import com.tehoturapp.team_task_management.dto.UserDto;
 import com.tehoturapp.team_task_management.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping()
-    public ResponseEntity<UserDto> createNewUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> createNewUser(@Valid @RequestBody UserDto userDto){
         return new ResponseEntity<>(userService.createNewUser(userDto), HttpStatus.CREATED);
     }
 
@@ -33,7 +34,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDto> updateUserById(@RequestBody UserDto userDto, @PathVariable Long userId){
+    public ResponseEntity<UserDto> updateUserById(@Valid @RequestBody UserDto userDto, @PathVariable Long userId){
         return new ResponseEntity<>(userService.updateUserById(userDto, userId), HttpStatus.OK);
     }
 

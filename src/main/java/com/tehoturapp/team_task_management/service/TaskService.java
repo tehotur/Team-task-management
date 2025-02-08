@@ -1,6 +1,8 @@
 package com.tehoturapp.team_task_management.service;
 
 import com.tehoturapp.team_task_management.dto.TaskDto;
+import com.tehoturapp.team_task_management.exception.TaskListNotFoundException;
+import com.tehoturapp.team_task_management.exception.TaskNotFoundException;
 import com.tehoturapp.team_task_management.mapper.DtoMapper;
 import com.tehoturapp.team_task_management.persistence.dao.TaskListRepository;
 import com.tehoturapp.team_task_management.persistence.dao.TaskRepository;
@@ -8,7 +10,6 @@ import com.tehoturapp.team_task_management.persistence.entity.Task;
 import com.tehoturapp.team_task_management.persistence.entity.TaskList;
 import com.tehoturapp.team_task_management.persistence.entity.TaskPriority;
 import com.tehoturapp.team_task_management.persistence.entity.TaskStatus;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,7 @@ public class TaskService {
 
     private TaskList findTaskListById(Integer taskListId){
         return taskListRepository.findById(taskListId)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new TaskListNotFoundException(taskListId));
     }
     @Transactional
     public TaskDto createNewTask(Integer taskListId, TaskDto taskDto) {
@@ -51,7 +52,7 @@ public class TaskService {
     @Transactional
     public TaskDto patchTask(Map<String, Object> patchUpdates, Integer taskListId, Integer taskId) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
 
         if (patchUpdates.containsKey("title")){
             task.setTitle((String) patchUpdates.get("title"));

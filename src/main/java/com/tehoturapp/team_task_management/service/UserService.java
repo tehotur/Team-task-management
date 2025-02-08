@@ -2,8 +2,8 @@ package com.tehoturapp.team_task_management.service;
 
 import com.tehoturapp.team_task_management.dto.TaskListDto;
 import com.tehoturapp.team_task_management.dto.UserDto;
-import com.tehoturapp.team_task_management.exception.IdsNotMatchException;
 import com.tehoturapp.team_task_management.exception.RoleNotFoundException;
+import com.tehoturapp.team_task_management.exception.TaskListNotFoundException;
 import com.tehoturapp.team_task_management.exception.UserNotFoundException;
 import com.tehoturapp.team_task_management.mapper.DtoMapper;
 import com.tehoturapp.team_task_management.persistence.dao.RoleRepository;
@@ -12,7 +12,6 @@ import com.tehoturapp.team_task_management.persistence.dao.UserRepository;
 import com.tehoturapp.team_task_management.persistence.entity.Role;
 import com.tehoturapp.team_task_management.persistence.entity.TaskList;
 import com.tehoturapp.team_task_management.persistence.entity.User;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +28,15 @@ public class UserService {
     private final DtoMapper<User, UserDto> userDtoMapper;
     private final DtoMapper<TaskList, TaskListDto> taskListDtoMapper;
 
+    public User findUserByIdFromDb(Long userId){
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+    }
+    public UserDto getUserById(Long userId) {
+        User userFromDb = findUserByIdFromDb(userId);
+        return userDtoMapper.toDto(userFromDb);
+    }
+
     public UserDto createNewUser(UserDto userDto) {
         User userEntity = userDtoMapper.toEntity(userDto);
         //password encoder... userEntity.setPassword();
@@ -43,18 +51,11 @@ public class UserService {
                 .toList();
     }
 
-    public UserDto getUserById(Long userId) {
-        User findedUser = userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
-        return userDtoMapper.toDto(findedUser);
-    }
+
     @Transactional
     public UserDto updateUserById(UserDto userDto, Long userId) {
-        if (!userId.equals(userDto.getId())){
-            throw new IdsNotMatchException();
-        }
-        User userFromDb = userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+
+        User userFromDb = findUserByIdFromDb(userId);
 
         userFromDb.setName(userDto.getName());
         userFromDb.setEmail(userDto.getEmail());
@@ -63,18 +64,18 @@ public class UserService {
         userRepository.save(userFromDb);
         return userDtoMapper.toDto(userFromDb);
     }
+
     @Transactional
     public UserDto assignRoleToUserById(Long userId, Integer roleId) {
         Role role = roleRepository.findById(roleId)
-                .orElseThrow(RoleNotFoundException::new);
+                .orElseThrow(() -> new RoleNotFoundException(roleId));
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+        User userFromDb = findUserByIdFromDb(userId);
 
-        user.setRole(role);
-        userRepository.save(user);
+        userFromDb.setRole(role);
+        userRepository.save(userFromDb);
 
-        return userDtoMapper.toDto(user);
+        return userDtoMapper.toDto(userFromDb);
     }
     @Transactional
     public void deleteUserById(Long userId) {
@@ -83,15 +84,14 @@ public class UserService {
 
     public TaskListDto assignUserToTaskListById(Long userId, Integer taskListId) {
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+        User userFromDb = findUserByIdFromDb(userId);
 
         TaskList taskList = taskListRepository.findById(taskListId)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new TaskListNotFoundException(taskListId));
 
-        user.setTaskList(taskList);
+        userFromDb.setTaskList(taskList);
 
-        userRepository.save(user);
+        userRepository.save(userFromDb);
 
         return taskListDtoMapper.toDto(taskList);
     }

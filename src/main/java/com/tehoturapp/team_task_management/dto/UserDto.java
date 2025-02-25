@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,5 +23,5 @@ public class UserDto {
     @NotBlank(message = "Password cannot be null.")
     @Size(min = 8, message = "Password must have at least 8 characters.")
     private String password;
-    private RoleDto role;
+    private Set<RoleDto> roles;
 }

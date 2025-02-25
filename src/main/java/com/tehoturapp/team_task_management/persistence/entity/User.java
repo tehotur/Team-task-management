@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -25,9 +27,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "role")
-    private Role role;
+    @ManyToMany
+    private Set<Role> roles;
 
     @ManyToOne
     @JoinColumn(name = "taskList")

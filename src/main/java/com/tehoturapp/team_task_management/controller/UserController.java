@@ -49,6 +49,12 @@ public class UserController {
        return new ResponseEntity<>(userService.assignRoleToUserById(userId, roleId), HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{userId}/roles/{roleId}")
+    public ResponseEntity<UserDto> removeRoleFromUserById(@PathVariable Long userId, @PathVariable Integer roleId){
+        return new ResponseEntity<>(userService.removeRoleFromUserById(userId, roleId), HttpStatus.OK);
+    }
+
+
     @PostMapping("/{userId}/task-lists/{taskListId}")
     public ResponseEntity<TaskListDto> assignUserToTaskListById(@PathVariable Long userId, @PathVariable Integer taskListId){
         return new ResponseEntity<>(userService.assignUserToTaskListById(userId, taskListId), HttpStatus.CREATED);

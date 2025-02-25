@@ -15,11 +15,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,13 +46,14 @@ public class UserServiceTest {
         user.setName("user1");
         user.setEmail("user@email.com");
         user.setPassword("password1234");
+        user.setRoles(new HashSet<>());
 
         role = new Role();
         role.setId(1);
         role.setName("admin");
 
         roleDto = new RoleDto(role.getId(), role.getName());
-        expectedUserDto = new UserDto(user.getId(), user.getName(), user.getEmail(), user.getPassword(), roleDto);
+        expectedUserDto = new UserDto(user.getId(), user.getName(), user.getEmail(), user.getPassword(), Set.of(roleDto));
     }
 
     @Test
@@ -64,7 +66,7 @@ public class UserServiceTest {
         UserDto result = userService.assignRoleToUserById(user.getId(), role.getId());
 
         assertEquals(expectedUserDto, result);
-        assertEquals(role, user.getRole());
+        assertTrue(user.getRoles().contains(role));
 
         verify(userRepository).save(user);
     }

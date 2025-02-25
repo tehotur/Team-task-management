@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +33,12 @@ public class UserService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
+
+    public Role findRoleByIdFromDb(Integer roleId){
+        return roleRepository.findById(roleId)
+                .orElseThrow(() -> new RoleNotFoundException(roleId));
+    }
+
     public UserDto getUserById(Long userId) {
         User userFromDb = findUserByIdFromDb(userId);
         return userDtoMapper.toDto(userFromDb);
@@ -51,7 +58,6 @@ public class UserService {
                 .toList();
     }
 
-
     @Transactional
     public UserDto updateUserById(UserDto userDto, Long userId) {
 
@@ -67,21 +73,38 @@ public class UserService {
 
     @Transactional
     public UserDto assignRoleToUserById(Long userId, Integer roleId) {
-        Role role = roleRepository.findById(roleId)
-                .orElseThrow(() -> new RoleNotFoundException(roleId));
 
+        Role roleFromDb = findRoleByIdFromDb(roleId);
         User userFromDb = findUserByIdFromDb(userId);
 
-        userFromDb.setRole(role);
+        Set<Role> rolesOfUser =  userFromDb.getRoles();
+        rolesOfUser.add(roleFromDb);
+
         userRepository.save(userFromDb);
 
         return userDtoMapper.toDto(userFromDb);
     }
+
+    @Transactional
+    public UserDto removeRoleFromUserById(Long userId, Integer roleId) {
+
+        Role roleFromDb = findRoleByIdFromDb(roleId);
+        User userFromDb = findUserByIdFromDb(userId);
+
+        Set<Role> rolesOfUser =  userFromDb.getRoles();
+        rolesOfUser.remove(roleFromDb);
+
+        userRepository.save(userFromDb);
+
+        return userDtoMapper.toDto(userFromDb);
+    }
+
     @Transactional
     public void deleteUserById(Long userId) {
         userRepository.deleteById(userId);
     }
 
+    @Transactional
     public TaskListDto assignUserToTaskListById(Long userId, Integer taskListId) {
 
         User userFromDb = findUserByIdFromDb(userId);

@@ -31,9 +31,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             UserNotFoundException.class,
             RoleNotFoundException.class,
             TaskListNotFoundException.class,
-            TaskNotFoundException.class
+            TaskNotFoundException.class,
+            TaskNotInTaskListException.class
     })
-    public ResponseEntity<ErrorResponse> handleUserNotFoundException(RuntimeException ex){
+    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(RuntimeException ex){
 
         log.error("Not Found Exception: {}", ex.getMessage());
 

@@ -16,12 +16,21 @@ public class TaskListService {
     private final TaskListRepository taskListRepository;
     private final DtoMapper<TaskList, TaskListDto> taskListDtoMapper;
 
+    /**
+     * Creates new task list.
+     * @param taskListDto data of new task list
+     * @return Created task list in form of Dto
+     */
     public TaskListDto createNewTaskList(TaskListDto taskListDto) {
         TaskList taskListEntity = taskListDtoMapper.toEntity(taskListDto);
         TaskList savedTaskListEntity = taskListRepository.save(taskListEntity);
         return taskListDtoMapper.toDto(savedTaskListEntity);
     }
 
+    /**
+     * Gets list of all task lists and converts them to DTOs.
+     * @return List of all task lists in form of TaskListDto
+     */
     public List<TaskListDto> getAllTaskLists() {
         return taskListRepository.findAll()
                 .stream()
@@ -29,9 +38,11 @@ public class TaskListService {
                 .toList();
     }
 
+    /**
+     * Deletes task list by its ID.
+     * @param taskListId task list ID
+     */
     public void deleteTaskListById(Integer taskListId) {
         taskListRepository.deleteById(taskListId);
     }
-
-
 }

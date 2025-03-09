@@ -38,7 +38,6 @@ public class RoleController {
     }
 
     /**
-     *
      * Updates the role by its ID.
      * @param roleDto role data
      * @param roleId role ID

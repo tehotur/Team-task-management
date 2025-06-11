@@ -1,9 +1,7 @@
 package com.tehoturapp.team_task_management.mapper;
 
 import com.tehoturapp.team_task_management.dto.TaskDto;
-import com.tehoturapp.team_task_management.dto.TaskListDto;
 import com.tehoturapp.team_task_management.persistence.entity.Task;
-import com.tehoturapp.team_task_management.persistence.entity.TaskList;
 import com.tehoturapp.team_task_management.persistence.entity.TaskPriority;
 import com.tehoturapp.team_task_management.persistence.entity.TaskStatus;
 import lombok.RequiredArgsConstructor;

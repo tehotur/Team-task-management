@@ -38,15 +38,24 @@ public class UserDtoMapperImpl implements DtoMapper<User, UserDto> {
         if (user == null){
             return null;
         }
-        return new UserDto(
-                user.getId(),
+
+        UserDto userDto = new UserDto();
+                userDto.setId(user.getId());
+                userDto.setName(user.getName());
+                userDto.setEmail(user.getEmail());
+                userDto.setRoles(user.getRoles()
+                        .stream()
+                        .map(roleDtoMapper::toDto)
+                        .collect(Collectors.toSet()));
+        return userDto;
+
+        /*        user.getId(),
                 user.getName(),
                 user.getEmail(),
-                user.getPassword(),
                 user.getRoles()
                         .stream()
                         .map(roleDtoMapper::toDto)
                         .collect(Collectors.toSet())
-        );
+        );*/
     }
 }

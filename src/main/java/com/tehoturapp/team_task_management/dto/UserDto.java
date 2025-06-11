@@ -2,7 +2,6 @@ package com.tehoturapp.team_task_management.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,9 +17,9 @@ public class UserDto {
     @NotBlank(message = "Name cannot be null or empty.")
     private String name;
     @Email(message = "Not valid email format.")
-    @NotEmpty(message = "Email cannot be null or empty.")
+    @NotBlank(message = "Email cannot be null or empty.")
     private String email;
-    @NotBlank(message = "Password cannot be null.")
+    @NotBlank(message = "Password cannot be null or empty.")
     @Size(min = 8, message = "Password must have at least 8 characters.")
     private String password;
     private Set<RoleDto> roles;

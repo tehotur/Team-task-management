@@ -13,6 +13,7 @@ import com.tehoturapp.team_task_management.persistence.entity.Role;
 import com.tehoturapp.team_task_management.persistence.entity.TaskList;
 import com.tehoturapp.team_task_management.persistence.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ public class UserService {
     private final TaskListRepository taskListRepository;
     private final DtoMapper<User, UserDto> userDtoMapper;
     private final DtoMapper<TaskList, TaskListDto> taskListDtoMapper;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Finds a user by its ID.
@@ -67,8 +69,15 @@ public class UserService {
      * @return Created user in form of Dto
      */
     public UserDto createNewUser(UserDto userDto) {
+        if (userDto.getPassword() == null || userDto.getPassword().isBlank()){
+            throw new IllegalArgumentException("Password cannot be empty");
+        }
+
+        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+
         User userEntity = userDtoMapper.toEntity(userDto);
-        //TO DO password encoder... userEntity.setPassword();
+        userEntity.setPassword(encodedPassword);
+
         User savedUser = userRepository.save(userEntity);
         return userDtoMapper.toDto(savedUser);
     }
